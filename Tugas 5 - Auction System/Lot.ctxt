@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Lot
+comment1.params=number\ description
+comment1.target=Lot(int,\ java.lang.String)
+comment2.params=
+comment2.target=int\ getNumber()
+comment3.params=
+comment3.target=java.lang.String\ getDescription()
+comment4.params=
+comment4.target=Bid\ getHighestBid()
+comment5.params=bid
+comment5.target=boolean\ bidFor(Bid)
+comment6.params=
+comment6.target=java.lang.String\ toString()
+numComments=7
