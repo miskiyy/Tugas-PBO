@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Responder
+comment0.text=\r\n\ The\ responder\ class\ represents\ a\ response\ generator\ object.\r\n\ It\ is\ used\ to\ generate\ an\ automatic\ response\ based\ on\ user\ input.\r\n
+comment1.params=
+comment1.target=Responder()
+comment2.params=input
+comment2.target=java.lang.String\ generateResponse(java.lang.String)
+comment2.text=\r\n\ Generate\ a\ response\ based\ on\ input.\r\n\ @return\ A\ string\ that\ should\ be\ displayed\ as\ the\ response.\r\n
+comment3.params=
+comment3.target=void\ fillResponseMap()
+comment3.text=\r\n\ Fill\ the\ response\ map\ with\ predefined\ keywords\ and\ responses.\r\n
+comment4.params=
+comment4.target=void\ fillResponses()
+comment4.text=\r\n\ Fill\ the\ list\ of\ random\ responses.\r\n
+numComments=5
