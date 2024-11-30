@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Rental
+comment1.params=
+comment1.target=Rental()
+comment2.params=vehicle
+comment2.target=void\ addVehicle(Vehicle)
+comment3.params=id
+comment3.target=Vehicle\ getVehicle(int)
+comment4.params=renter
+comment4.target=void\ addRenter(Renter)
+comment5.params=renterName
+comment5.target=boolean\ returnVehicle(java.lang.String)
+comment6.params=
+comment6.target=void\ showVehicle()
+comment7.params=
+comment7.target=void\ showRenter()
+numComments=8
