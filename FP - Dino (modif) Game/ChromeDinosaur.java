@@ -7,16 +7,18 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     private static int highScore = 0;
     int boardWidth = 750;
     int boardHeight = 250;
-    int trackX = 0; // Posisi horizontal awal gambar track
-    int trackWidth = 0; // Lebar gambar track
-    
-    // images
+    int trackX = 0; 
+    int trackWidth = 0; 
+ 
     Image dinosaurImg1;
     Image dinosaurImg2;
     Image dinosaurImg3;
     Image cactus1Img;
     Image cactus2Img;
     Image cactus3Img;
+    Image cactus4Img;
+    Image cactus5Img;
+    Image cactus6Img;
     Image gameOverImg;
     Image trackImage;
     Image resetImg;
@@ -50,7 +52,11 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     int cactus1Width = 34;
     int cactus2Width = 69;
     int cactus3Width = 102;
+    int cactus4Width = 50;
+    int cactus5Width = 103;
+    int cactus6Width = 150;
     int cactusHeight = 70;
+    int cactusBigHeight = 100;
     int cactusX = 700;
     int cactusY = boardHeight - cactusHeight - 20; // adjust the Y position for a better view
     ArrayList<Block> cactusArray;
@@ -80,6 +86,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         cactus1Img = new ImageIcon(getClass().getResource("./img/cactus1.png")).getImage();
         cactus2Img = new ImageIcon(getClass().getResource("./img/cactus2.png")).getImage();
         cactus3Img = new ImageIcon(getClass().getResource("./img/cactus3.png")).getImage();
+        cactus4Img = new ImageIcon(getClass().getResource("./img/big-cactus1.png")).getImage();
+        cactus5Img = new ImageIcon(getClass().getResource("./img/big-cactus2.png")).getImage();
+        cactus6Img = new ImageIcon(getClass().getResource("./img/big-cactus3.png")).getImage();
         gameOverImg = new ImageIcon(getClass().getResource("./img/game-over.png")).getImage();
         resetImg = new ImageIcon(getClass().getResource("./img/reset.png")).getImage();
 
@@ -117,28 +126,37 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     }
 
     void placeCactus() {
-        if (gameOver) {
-            return;
-        }
-
-        double placeCactusChance = Math.random(); // 0 - 0.999999
-        if (placeCactusChance > .90) { // 10% chance for cactus3
-            Block cactus = new Block(cactusX, cactusY, cactus3Width, cactusHeight, cactus3Img);
-            cactusArray.add(cactus);
-        }
-        else if (placeCactusChance > .70) { // 20% chance for cactus2
-            Block cactus = new Block(cactusX, cactusY, cactus2Width, cactusHeight, cactus2Img);
-            cactusArray.add(cactus);
-        }
-        else if (placeCactusChance > .50) { // 20% chance for cactus1
-            Block cactus = new Block(cactusX, cactusY, cactus1Width, cactusHeight, cactus1Img);
-            cactusArray.add(cactus);
-        }
-
-        if (cactusArray.size() > 10) {
-            cactusArray.remove(0); // Remove the first cactus if there are too many
-        }
+    if (gameOver) {
+        return;
     }
+
+    double placeCactusChance = Math.random(); // 0 - 0.999999
+
+    if (placeCactusChance > 0.95) { // 5% chance for cactus6
+        Block cactus = new Block(cactusX, cactusY, cactus6Width, cactusBigHeight, cactus6Img);
+        cactusArray.add(cactus);
+    } else if (placeCactusChance > 0.80) { // 15% chance for cactus5
+        Block cactus = new Block(cactusX, cactusY, cactus5Width, cactusBigHeight, cactus5Img);
+        cactusArray.add(cactus);
+    } else if (placeCactusChance > 0.65) { // 15% chance for cactus4
+        Block cactus = new Block(cactusX, cactusY, cactus4Width, cactusBigHeight, cactus4Img);
+        cactusArray.add(cactus);
+    } else if (placeCactusChance > 0.45) { // 20% chance for cactus3
+        Block cactus = new Block(cactusX, cactusY, cactus3Width, cactusHeight, cactus3Img);
+        cactusArray.add(cactus);
+    } else if (placeCactusChance > 0.25) { // 20% chance for cactus2
+        Block cactus = new Block(cactusX, cactusY, cactus2Width, cactusHeight, cactus2Img);
+        cactusArray.add(cactus);
+    } else { // 25% chance for cactus1
+        Block cactus = new Block(cactusX, cactusY, cactus1Width, cactusHeight, cactus1Img);
+        cactusArray.add(cactus);
+    }
+
+    // Batasi jumlah kaktus di layar agar tidak terlalu banyak
+    if (cactusArray.size() > 10) { // Batas maksimal 10 kaktus di layar
+        cactusArray.remove(0);
+    }
+}
 
     @Override
     public void paintComponent(Graphics g) {

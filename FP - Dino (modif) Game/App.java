@@ -5,7 +5,6 @@ public class App {
         int boardWidth = 750;
         int boardHeight = 250;
 
-        // Pilihan pemain
         String[] options = {"Player 1", "Player 2", "Player 3"};
         
         int choice = JOptionPane.showOptionDialog(
@@ -20,10 +19,9 @@ public class App {
         );
 
         if (choice == -1) {
-            System.exit(0); // Tutup program jika tidak ada pilihan
+            System.exit(0); 
         }
 
-        // Luncurkan game dengan pilihan pemain
         JFrame frame = new JFrame("Chrome Dinosaur");
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
