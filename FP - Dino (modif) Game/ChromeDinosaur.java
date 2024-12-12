@@ -13,6 +13,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     Image dinosaurImg1;
     Image dinosaurImg2;
     Image dinosaurImg3;
+    Image dinosaurDuckImg;
     Image cactus1Img;
     Image cactus2Img;
     Image cactus3Img;
@@ -42,7 +43,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     // dinosaur
     int dinosaurWidth = 88;
     int dinosaurHeight = 94;
-    int duckedDinosaurHeight = 47;
+    int duckedDinosaurHeight = 60;
+    int duckedDinosaurWidth = 118;
     boolean isDucking = false;
     int dinosaurX = 50;
     int dinosaurY = boardHeight - dinosaurHeight - 20; // adjust the Y position for a better view
@@ -83,6 +85,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         dinosaurImg1 = new ImageIcon(getClass().getResource("./img/dino1-run.png")).getImage();
         dinosaurImg2 = new ImageIcon(getClass().getResource("./img/dino2-run.png")).getImage();
         dinosaurImg3 = new ImageIcon(getClass().getResource("./img/dino3-run.png")).getImage();
+        dinosaurDuckImg = new ImageIcon(getClass().getResource("./img/dino-duck.gif")).getImage();
         cactus1Img = new ImageIcon(getClass().getResource("./img/cactus1.png")).getImage();
         cactus2Img = new ImageIcon(getClass().getResource("./img/cactus2.png")).getImage();
         cactus3Img = new ImageIcon(getClass().getResource("./img/cactus3.png")).getImage();
@@ -153,7 +156,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     }
 
     // Batasi jumlah kaktus di layar agar tidak terlalu banyak
-    if (cactusArray.size() > 10) { // Batas maksimal 10 kaktus di layar
+    if (cactusArray.size() > 40) { // Batas maksimal 10 kaktus di layar
         cactusArray.remove(0);
     }
 }
@@ -244,57 +247,66 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         }
     }
 
-     @Override
+    @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_SPACE) { // Jump action for both UP and SPACE keys
-        if (!gameOver && dinosaur.y == dinosaurY) {
-            velocityY = -17; // Set jump speed
-            // Optionally change the image to a jumping image if you have one
-        }
-        // Restart the game if it's over and space is pressed
-        if (gameOver) {
-            // Reset the game state
-            dinosaur.y = dinosaurY; // Reset dinosaur position
-            dinosaur.height = dinosaurHeight; // Reset dinosaur height
-            velocityY = 0; // Reset vertical speed
-            isDucking = false; // Stop ducking
 
-            // Reset the high score tracking if needed (if game-over logic includes high score)
+        // Jump action
+        if ((keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_SPACE) && !isDucking) {
+            if (!gameOver && dinosaur.y == dinosaurY) {
+                velocityY = -17; // Set jump speed
+            }
+        }
+
+        if (keyCode == KeyEvent.VK_DOWN && !isDucking && dinosaur.y == dinosaurY) {
+            isDucking = true;
+            dinosaur.height = duckedDinosaurHeight;
+            dinosaurY = 180; // adjust the Y position for a better view
+            dinosaur.img = dinosaurDuckImg; // Ganti gambar dengan gambar duck
+        }
+
+        // Restart the game if it's over
+        if (gameOver && keyCode == KeyEvent.VK_SPACE) {
+            // Reset the game state
+            dinosaur.y = dinosaurY;
+            dinosaur.height = dinosaurHeight;
+            velocityY = 0;
+            isDucking = false;
+
+            // Reset high score if applicable
             if (score > highScore) {
-                highScore = score; // Update high score if new score is higher
+                highScore = score;
             }
 
             // Clear existing cacti
             cactusArray.clear();
 
-            // Reset the score and game state
+            // Reset score and game state
             score = 0;
             gameOver = false;
-            gameLoop.start(); // Restart the game loop
-            placeCactusTimer.start(); // Restart the cactus placement timer
-        }
-    } else if (keyCode == KeyEvent.VK_DOWN) { // Duck action
-        if (!gameOver) {
-            isDucking = true;
-            dinosaur.height = duckedDinosaurHeight; // Resize the dinosaur height for ducking
-            // Optionally change the image to a ducking image if you have one
+            gameLoop.start();
+            placeCactusTimer.start();
         }
     }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        if (keyCode == KeyEvent.VK_DOWN) { // Stop ducking
-            if (!gameOver) {
-                isDucking = false;
-                dinosaur.height = dinosaurHeight;
-            }
+        if (keyCode == KeyEvent.VK_DOWN && isDucking) {
+            isDucking = false;
+            dinosaur.height = dinosaurHeight;
+            dinosaur.img = dinosaurImg1; // Ganti kembali ke gambar normal (bisa disesuaikan)
+            dinosaurY = boardHeight - dinosaurHeight - 20; // adjust the Y position for a better view
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // Not used in this implementation
+    }
+
+    public void gameLoop() {
+        repaint();
     }
 }
