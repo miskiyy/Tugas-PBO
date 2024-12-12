@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -36,8 +37,14 @@ public class App {
         // Membuat objek permainan dengan pemain yang dipilih
         ChromeDinosaur chromeDinosaur = new ChromeDinosaur(choice);
         frame.add(chromeDinosaur);
+
+        // Menambahkan latar belakang gambar di App.java
+        
         frame.pack();
         chromeDinosaur.requestFocus();
         frame.setVisible(true);
+        
+        ImageIcon backgroundIcon = new ImageIcon(App.class.getResource("./img/bg.jpg"));
+        chromeDinosaur.setBackgroundImage(backgroundIcon.getImage());
     }
 }

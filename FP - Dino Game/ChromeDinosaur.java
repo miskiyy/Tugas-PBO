@@ -9,6 +9,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     int boardHeight = 250;
     int trackX = 0;
     int trackWidth = 0;
+    private int playerChoice;
+    private Image backgroundImage;
 
     Image trackImage;
     Image gameOverImg;
@@ -16,48 +18,56 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
     Dinosaur dinosaur;
     ArrayList<Cactus> cactusArray;
+    Timer placeCactusTimer;
+    ArrayList<Bird> birdArray;
+    Timer placeBirdTimer;
 
     int score = 0;
     boolean gameOver = false;
 
     Timer gameLoop;
-    Timer placeCactusTimer;
 
     public ChromeDinosaur(int playerChoice) {
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(Color.lightGray);
         setFocusable(true);
         addKeyListener(this);
+        this.playerChoice = playerChoice;
 
         // Load images
         trackImage = new ImageIcon(getClass().getResource("./img/track.png")).getImage();
         gameOverImg = new ImageIcon(getClass().getResource("./img/game-over.png")).getImage();
         resetImg = new ImageIcon(getClass().getResource("./img/reset.png")).getImage();
 
-        // Dinosaur selection
         switch (playerChoice) {
             case 0:
-                dinosaur = new Dinosaur(50, boardHeight - 94 - 20, 88, 94, new ImageIcon(getClass().getResource("./img/dino1-run.png")).getImage());
+                dinosaur = new Dinosaur(50, boardHeight - 94 - 20, 88, 94, 
+                    new ImageIcon(getClass().getResource("./img/dino1-run.png")).getImage(),
+                    new ImageIcon(getClass().getResource("./img/dino-duck.gif")).getImage());
                 break;
             case 1:
-                dinosaur = new Dinosaur(50, boardHeight - 94 - 20, 88, 94, new ImageIcon(getClass().getResource("./img/dino2-run.png")).getImage());
+                dinosaur = new Dinosaur(50, boardHeight - 94 - 20, 88, 94, 
+                    new ImageIcon(getClass().getResource("./img/dino2-run.png")).getImage(),
+                    new ImageIcon(getClass().getResource("./img/dino-duck.gif")).getImage());
                 break;
             case 2:
-                dinosaur = new Dinosaur(50, boardHeight - 94 - 20, 88, 94, new ImageIcon(getClass().getResource("./img/dino3-run.png")).getImage());
+                dinosaur = new Dinosaur(50, boardHeight - 94 - 20, 88, 94, 
+                    new ImageIcon(getClass().getResource("./img/dino3-run.png")).getImage(),
+                    new ImageIcon(getClass().getResource("./img/dino-duck.gif")).getImage());
                 break;
             default:
-                dinosaur = new Dinosaur(50, boardHeight - 94 - 20, 88, 94, new ImageIcon(getClass().getResource("./img/dino1-run.png")).getImage());
+                dinosaur = new Dinosaur(50, boardHeight - 94 - 20, 88, 94, 
+                    new ImageIcon(getClass().getResource("./img/dino1-run.png")).getImage(),
+                    new ImageIcon(getClass().getResource("./img/dino-duck.gif")).getImage());
         }
 
-        // Initialize cactus array
-        cactusArray = new ArrayList<Cactus>();
-
-        // Game timer
+        
         gameLoop = new Timer(1000 / 60, this);
         gameLoop.start();
         trackWidth = boardWidth;
-
+        
         // Place cactus timer
+        cactusArray = new ArrayList<Cactus>();
         placeCactusTimer = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,6 +75,16 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             }
         });
         placeCactusTimer.start();
+        
+        // Timer for placing birds
+        birdArray = new ArrayList<Bird>();
+        placeBirdTimer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                placeBird();
+            }
+        });
+        placeBirdTimer.start();
     }
 
     void placeCactus() {
@@ -75,11 +95,11 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         double placeCactusChance = Math.random();
 
         if (placeCactusChance > 0.95) {
-            cactusArray.add(new Cactus(700, boardHeight - 100 - 20, 150, 100, new ImageIcon(getClass().getResource("./img/big-cactus3.png")).getImage()));
+            cactusArray.add(new Cactus(700, boardHeight - 70 - 20, 150, 100, new ImageIcon(getClass().getResource("./img/big-cactus3.png")).getImage()));
         } else if (placeCactusChance > 0.80) {
-            cactusArray.add(new Cactus(700, boardHeight - 100 - 20, 103, 100, new ImageIcon(getClass().getResource("./img/big-cactus2.png")).getImage()));
+            cactusArray.add(new Cactus(700, boardHeight - 70 - 20, 103, 100, new ImageIcon(getClass().getResource("./img/big-cactus2.png")).getImage()));
         } else if (placeCactusChance > 0.65) {
-            cactusArray.add(new Cactus(700, boardHeight - 100 - 20, 50, 100, new ImageIcon(getClass().getResource("./img/big-cactus1.png")).getImage()));
+            cactusArray.add(new Cactus(700, boardHeight - 70 - 20, 50, 100, new ImageIcon(getClass().getResource("./img/big-cactus1.png")).getImage()));
         } else if (placeCactusChance > 0.45) {
             cactusArray.add(new Cactus(700, boardHeight - 70 - 20, 102, 70, new ImageIcon(getClass().getResource("./img/cactus3.png")).getImage()));
         } else if (placeCactusChance > 0.25) {
@@ -94,9 +114,34 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         }
     }
 
+    void placeBird() {
+            if (gameOver) {
+                return;
+            }
+
+            double placeBirdChance = Math.random(); 
+
+            // Tentukan aturan kemunculan burung
+            if (placeBirdChance > 0.3) { // Aturan kemunculan burung, kamu bisa mengubah angka ini
+                int birdHeight = 120; // Randomkan posisi vertikal burung
+                birdArray.add(new Bird(700, birdHeight, 64, 64, 
+                    new ImageIcon(getClass().getResource("./img/bird.gif")).getImage()));
+            }
+
+            // Batasi jumlah burung di layar agar tidak terlalu banyak
+            if (birdArray.size() > 10) {
+                birdArray.remove(0);
+            }
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        if (backgroundImage != null) {
+            // Menggambar latar belakang sesuai ukuran panel
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
 
         // Draw track
         g.drawImage(trackImage, trackX, boardHeight - 40, trackWidth, 40, this);
@@ -107,11 +152,22 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         }
 
         // Draw dinosaur
-        g.drawImage(dinosaur.img, dinosaur.x, dinosaur.y, dinosaur.width, dinosaur.height, null);
+        // g.drawImage(dinosaur.img, dinosaur.x, dinosaur.y, dinosaur.width, dinosaur.height, null);
+
+        if (dinosaur.isDucking) {
+            g.drawImage(dinosaur.img, dinosaur.x, 180, dinosaur.width, dinosaur.height, null);
+        } else {
+            g.drawImage(dinosaur.img, dinosaur.x, dinosaur.y, dinosaur.width, dinosaur.height, null);
+        }
 
         // Draw cacti
         for (Cactus cactus : cactusArray) {
             g.drawImage(cactus.img, cactus.x, cactus.y, cactus.width, cactus.height, null);
+        }
+
+        // Draw birds
+        for (Bird bird : birdArray) {
+            g.drawImage(bird.img, bird.x, bird.y, bird.width, bird.height, null);
         }
 
         g.setColor(Color.black);
@@ -124,6 +180,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         }
 
         g.drawString("High Score: " + String.valueOf(highScore), boardWidth - 300, 35);
+
     }
 
     public void move() {
@@ -138,6 +195,17 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             }
         }
 
+        // Move and check collision for each bird
+        for (Bird bird : birdArray) {
+            bird.x -= 8; // Gerakan burung ke kiri
+            bird.y += Math.sin(bird.x / 50.0) * 2; // Gerakan vertikal sederhana
+
+            if (collision(dinosaur, bird)) {
+                gameOver = true;
+            }
+        }
+
+
         if (score > highScore) {
             highScore = score;
         }
@@ -146,7 +214,11 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     }
 
     boolean collision(Block a, Block b) {
-        return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
+        int tolerance = -20;  // Tentukan toleransi pergerakan (misalnya 5 piksel)
+
+        // Periksa tabrakan dengan toleransi
+        return a.x < b.x + b.width + tolerance && a.x + a.width > b.x - tolerance &&
+            a.y < b.y + b.height + tolerance && a.y + a.height > b.y - tolerance;
     }
 
     @Override
@@ -155,6 +227,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         repaint();
         if (gameOver) {
             placeCactusTimer.stop();
+            placeBirdTimer.stop();
             gameLoop.stop();
         }
     }
@@ -167,8 +240,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             dinosaur.jump();
         }
 
-        if (keyCode == KeyEvent.VK_DOWN && !dinosaur.isDucking && dinosaur.y == dinosaur.originalY) {
+        if (keyCode == KeyEvent.VK_DOWN && !dinosaur.isDucking) {
             dinosaur.duck();
+            // dinosaur.y=180;
         }
 
         if (gameOver && keyCode == KeyEvent.VK_SPACE) {
@@ -177,25 +251,40 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     }
 
     private void resetGame() {
-        dinosaur.y = dinosaur.originalY;
-        dinosaur.height = 94;
-        dinosaur.velocityY = 0;
-        dinosaur.isDucking = false;
+        dinosaur.reset();
 
         if (score > highScore) {
             highScore = score;
         }
 
         cactusArray.clear();
+        birdArray.clear();
         score = 0;
         gameOver = false;
         gameLoop.start();
         placeCactusTimer.start();
+        placeBirdTimer.start();
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+
+        // Jika tombol bawah dilepaskan dan dinosaur sedang ducking, kembali ke mode run
+        if (keyCode == KeyEvent.VK_DOWN && dinosaur.isDucking) {
+            dinosaur.standUp();
+        }
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {}
+    public void setBackgroundImage(Image backgroundImage) {
+        this.backgroundImage = backgroundImage;
+    }
+
+    // Menentukan ukuran panel tetap 750x250
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(750, 250);
+    }
 }
