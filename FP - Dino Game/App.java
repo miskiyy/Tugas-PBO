@@ -2,12 +2,14 @@ import javax.swing.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        // Dimensi dari board
         int boardWidth = 750;
         int boardHeight = 250;
 
-        // Pilihan pemain
+        // Pilihan pemain yang akan ditampilkan di dialog box
         String[] options = {"Player 1", "Player 2", "Player 3"};
         
+        // Menampilkan dialog untuk memilih pemain
         int choice = JOptionPane.showOptionDialog(
             null,
             "Pilih pemain Anda:",
@@ -19,17 +21,19 @@ public class App {
             options[0]
         );
 
+        // Jika tidak memilih apapun, keluar aplikasi
         if (choice == -1) {
-            System.exit(0); // Tutup program jika tidak ada pilihan
+            System.exit(0); 
         }
 
-        // Luncurkan game dengan pilihan pemain
+        // Membuat frame untuk permainan
         JFrame frame = new JFrame("Chrome Dinosaur");
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Membuat objek permainan dengan pemain yang dipilih
         ChromeDinosaur chromeDinosaur = new ChromeDinosaur(choice);
         frame.add(chromeDinosaur);
         frame.pack();
