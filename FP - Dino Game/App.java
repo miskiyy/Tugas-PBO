@@ -38,13 +38,11 @@ public class App {
         ChromeDinosaur chromeDinosaur = new ChromeDinosaur(choice);
         frame.add(chromeDinosaur);
 
-        // Menambahkan latar belakang gambar di App.java
-        
         frame.pack();
         chromeDinosaur.requestFocus();
         frame.setVisible(true);
         
-        ImageIcon backgroundIcon = new ImageIcon(App.class.getResource("./img/bg.jpg"));
+        ImageIcon backgroundIcon = new ImageIcon(App.class.getResource("./img/bg2.jpg"));
         chromeDinosaur.setBackgroundImage(backgroundIcon.getImage());
     }
 }

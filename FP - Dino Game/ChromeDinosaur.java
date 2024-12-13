@@ -123,13 +123,13 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
             // Tentukan aturan kemunculan burung
             if (placeBirdChance > 0.3) { // Aturan kemunculan burung, kamu bisa mengubah angka ini
-                int birdHeight = 120; // Randomkan posisi vertikal burung
+                int birdHeight = 128; // Randomkan posisi vertikal burung
                 birdArray.add(new Bird(700, birdHeight, 64, 64, 
                     new ImageIcon(getClass().getResource("./img/bird.gif")).getImage()));
             }
 
             // Batasi jumlah burung di layar agar tidak terlalu banyak
-            if (birdArray.size() > 10) {
+            if (birdArray.size() > 30) {
                 birdArray.remove(0);
             }
     }
@@ -155,7 +155,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         // g.drawImage(dinosaur.img, dinosaur.x, dinosaur.y, dinosaur.width, dinosaur.height, null);
 
         if (dinosaur.isDucking) {
-            g.drawImage(dinosaur.img, dinosaur.x, 180, dinosaur.width, dinosaur.height, null);
+            g.drawImage(dinosaur.img, dinosaur.x, 180, dinosaur.width, 50, null);
         } else {
             g.drawImage(dinosaur.img, dinosaur.x, dinosaur.y, dinosaur.width, dinosaur.height, null);
         }
@@ -214,9 +214,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     }
 
     boolean collision(Block a, Block b) {
-        int tolerance = -20;  // Tentukan toleransi pergerakan (misalnya 5 piksel)
+        int tolerance = dinosaur.isDucking ? -25 : -10; 
 
-        // Periksa tabrakan dengan toleransi
+        // Jika burung sedang ducking, tambahkan toleransi
         return a.x < b.x + b.width + tolerance && a.x + a.width > b.x - tolerance &&
             a.y < b.y + b.height + tolerance && a.y + a.height > b.y - tolerance;
     }

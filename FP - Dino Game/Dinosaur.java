@@ -29,7 +29,7 @@ public class Dinosaur extends Block {
     public void duck() {
         if (!isDucking) {
             isDucking = true;
-            height = 50; // Tinggi saat menunduk
+            // height = 50; // Tinggi saat menunduk
             if (!isAdjustingHeight) {
                 y += 44; // Turun sedikit untuk menyesuaikan posisi
                 isAdjustingHeight = true;
@@ -42,7 +42,7 @@ public class Dinosaur extends Block {
     public void standUp() {
         if (isDucking) {
             isDucking = false;
-            height = 94; // Kembali ke tinggi normal
+            // height = 94; // Kembali ke tinggi normal
             if (isAdjustingHeight) {
                 y -= 44; // Kembali ke posisi awal
                 isAdjustingHeight = false;
