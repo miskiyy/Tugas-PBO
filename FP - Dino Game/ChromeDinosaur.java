@@ -129,7 +129,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             }
 
             // Batasi jumlah burung di layar agar tidak terlalu banyak
-            if (birdArray.size() > 30) {
+            if (birdArray.size() > 15) {
                 birdArray.remove(0);
             }
     }

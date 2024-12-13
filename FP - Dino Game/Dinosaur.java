@@ -42,11 +42,13 @@ public class Dinosaur extends Block {
     public void standUp() {
         if (isDucking) {
             isDucking = false;
-            // height = 94; // Kembali ke tinggi normal
-            if (isAdjustingHeight) {
-                y -= 44; // Kembali ke posisi awal
-                isAdjustingHeight = false;
-            }
+            height = 94; 
+            y = 250 - 94 - 20;
+            // Kembali ke tinggi normal
+            // if (isAdjustingHeight) {
+            //     y -= 44; // Kembali ke posisi awal
+            //     isAdjustingHeight = false;
+            // }
             img = runImage; // Kembali ke gambar berlari
         }
     }

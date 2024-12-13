@@ -42,7 +42,7 @@ public class App {
         chromeDinosaur.requestFocus();
         frame.setVisible(true);
         
-        ImageIcon backgroundIcon = new ImageIcon(App.class.getResource("./img/bg2.jpg"));
+        ImageIcon backgroundIcon = new ImageIcon(App.class.getResource("./img/bg3.jpg"));
         chromeDinosaur.setBackgroundImage(backgroundIcon.getImage());
     }
 }
